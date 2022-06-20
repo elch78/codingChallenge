@@ -32,9 +32,9 @@ fun merge(intervals: List<Pair<Int, Int>>): List<Pair<Int, Int>> {
             // handle special case that lastNode is the first node and the new interval needs
             // to become the first node
             if(it.first > lastNode!!.interval.second) {
-                lastNode.insertAfter(it)
+                lastNode.next = IntervalNode(it, next = lastNode.next, previous = lastNode)
             } else {
-                lastNode.insertBefore(it)
+                lastNode.previous = IntervalNode(it, next = lastNode, previous = null)
                 merged = lastNode.previous
             }
 
@@ -64,18 +64,6 @@ class IntervalNode(var interval: Pair<Int, Int>, var next: IntervalNode?, var pr
             next = node.next // remove the merged node from the list
             node = node.next
         }
-    }
-
-    fun insertBefore(interval: Pair<Int, Int>) {
-        val node = IntervalNode(interval = interval, next = this, previous = this.previous)
-        previous = node
-        previous?.next = node
-    }
-
-    fun insertAfter(interval: Pair<Int, Int>) {
-        val node = IntervalNode(interval = interval, next = this.next, previous = this)
-        next = node
-        next?.previous = node
     }
 
     /**
