@@ -56,7 +56,7 @@ class IntervalNode(var interval: Pair<Int, Int>, var next: IntervalNode?, var pr
     fun merge(other: Pair<Int, Int>) {
         // merge the interval
         interval = mergeIntervals(this.interval, other)
-        // an expansion of the interval can cause the merge of consecutive intervals
+        // an expansion of the interval can cause the merge of previously unconnected intervals
         var node = next
         while (node != null
                 && node.intersectOrAdjacent(this.interval)) {
