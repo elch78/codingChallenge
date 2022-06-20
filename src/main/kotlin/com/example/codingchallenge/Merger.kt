@@ -24,7 +24,15 @@ fun merge(intervals: List<Pair<Int, Int>>): List<Pair<Int, Int>> {
             } while(node != null && node.interval.first < it.second)
             // insert a new node if no node intersected
             // this makes the list ordered
-            lastNode!!.next = IntervalNode(it, next = lastNode.next, previous = lastNode)
+            // handle special case that lastNode is the first node and the new interval needs
+            // to become the first node
+            if(it.first > lastNode!!.interval.second) {
+                lastNode.next = IntervalNode(it, next = lastNode.next, previous = lastNode)
+            } else {
+                lastNode.previous = IntervalNode(it, next = lastNode, previous = null)
+                merged = lastNode.previous
+            }
+
         }
     }
     return merged?.intervals() ?: emptyList()
@@ -32,7 +40,7 @@ fun merge(intervals: List<Pair<Int, Int>>): List<Pair<Int, Int>> {
 
 /**
  * A hand crafted linked List since we want to manipulate the pointers and I from the back of my head
- * didn't know of a way to do it with the standard linked list ...
+ * don't know of a way to do it with the standard linked list ...
  */
 class IntervalNode(var interval: Pair<Int, Int>, var next: IntervalNode?, var previous: IntervalNode?) {
     fun intersectOrAdjacent(other: Pair<Int, Int>) = intervalsIntersectOrAdjacent(this.interval, other)
