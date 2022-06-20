@@ -1,6 +1,5 @@
 package com.example.codingchallenge
 
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -26,6 +25,7 @@ class MergerTest {
                 Arguments.of( listOf(Pair(1,2),Pair(4,5)), listOf(Pair(1,2),Pair(4,5))),
                 Arguments.of( listOf(Pair(1,2),Pair(3,4)), listOf(Pair(1,4))),
                 Arguments.of( listOf(Pair(1,2),Pair(5,6),Pair(3,4)), listOf(Pair(1,6))),
+                Arguments.of( listOf(Pair(1,2),Pair(8,9),Pair(4,5)), listOf(Pair(1,2), Pair(4,5), Pair(8,9))),
 
         )
     }
