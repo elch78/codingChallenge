@@ -3,6 +3,11 @@ package com.example.codingchallenge
 import kotlin.math.max
 import kotlin.math.min
 
+/**
+ * merges intervals
+ * @param intervals the intervals to merge
+ * @return merged intervals
+ */
 fun merge(intervals: List<Pair<Int, Int>>): List<Pair<Int, Int>> {
     var merged: IntervalNode? = null
     intervals.forEach intervals@ {
@@ -27,9 +32,9 @@ fun merge(intervals: List<Pair<Int, Int>>): List<Pair<Int, Int>> {
             // handle special case that lastNode is the first node and the new interval needs
             // to become the first node
             if(it.first > lastNode!!.interval.second) {
-                lastNode.next = IntervalNode(it, next = lastNode.next, previous = lastNode)
+                lastNode.insertAfter(it)
             } else {
-                lastNode.previous = IntervalNode(it, next = lastNode, previous = null)
+                lastNode.insertBefore(it)
                 merged = lastNode.previous
             }
 
@@ -39,8 +44,8 @@ fun merge(intervals: List<Pair<Int, Int>>): List<Pair<Int, Int>> {
 }
 
 /**
- * A hand crafted linked List since we want to manipulate the pointers and I from the back of my head
- * don't know of a way to do it with the standard linked list ...
+ * A hand crafted linked List since we want to manipulate the pointers to remove merged nodes from the list
+ * and I from the back of my head don't know of a way to do it with the standard linked list ...
  */
 class IntervalNode(var interval: Pair<Int, Int>, var next: IntervalNode?, var previous: IntervalNode?) {
     fun intersectOrAdjacent(other: Pair<Int, Int>) = intervalsIntersectOrAdjacent(this.interval, other)
@@ -59,6 +64,18 @@ class IntervalNode(var interval: Pair<Int, Int>, var next: IntervalNode?, var pr
             next = node.next // remove the merged node from the list
             node = node.next
         }
+    }
+
+    fun insertBefore(interval: Pair<Int, Int>) {
+        val node = IntervalNode(interval = interval, next = this, previous = this.previous)
+        previous = node
+        previous?.next = node
+    }
+
+    fun insertAfter(interval: Pair<Int, Int>) {
+        val node = IntervalNode(interval = interval, next = this.next, previous = this)
+        next = node
+        next?.previous = node
     }
 
     /**
