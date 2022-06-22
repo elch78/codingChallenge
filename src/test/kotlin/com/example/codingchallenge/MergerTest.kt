@@ -19,8 +19,11 @@ class MergerTest {
     }
 
     companion object {
+        private val EMPTY_LIST: List<Pair<Int,Int>>  = emptyList()
+
         @JvmStatic
         fun test(): Stream<Arguments> = Stream.of(
+                Arguments.of( EMPTY_LIST, EMPTY_LIST),
                 Arguments.of( listOf(Pair(1,2)), listOf(Pair(1,2))),
                 Arguments.of( listOf(Pair(1,2),Pair(4,5)), listOf(Pair(1,2),Pair(4,5))),
                 Arguments.of( listOf(Pair(1,2),Pair(3,4)), listOf(Pair(1,4))),
